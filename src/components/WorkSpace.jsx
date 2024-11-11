@@ -163,10 +163,10 @@ export default function Component() {
 
       {/* Main Content */}
       <div className="flex-1 p-8 overflow-auto">
-        <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-4" role="alert">
+        {/* <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-4" role="alert">
           <p>Your workspace has been created successfully!</p>
-        </div>
-        <h2 className="text-3xl font-bold mb-6">{eventName}</h2>
+        </div> */}
+        <h2 className="text-3xl font-bold m-3">{eventName}</h2>
         {renderSection()}
       </div>
     </div>

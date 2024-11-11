@@ -5,14 +5,13 @@ import { FileText, Users, Plus } from "lucide-react";
 import Template from './Template';
 
 export default function DraftSection() {
-  const [showTemplate, setShowTemplate] = useState(false);
+  const [showTemplate, setShowTemplate] = useState(true); // Initially set to true to show Template first
 
   const drafts = [
     { no: 1, templateName: "RSVP wedding", category: "RSVP", type: "Text" },
     { no: 2, templateName: "Lunch-2", category: "Itinerary", type: "Document" },
   ];
 
-  // Handle toggling between DraftSection and Template views
   if (showTemplate) {
     return <Template onSwitch={() => setShowTemplate(false)} />;
   }
@@ -24,7 +23,7 @@ export default function DraftSection() {
           variant="outline"
           size="sm"
           className="flex items-center gap-2"
-          onClick={() => setShowTemplate(true)} // Toggle to Template view
+          onClick={() => setShowTemplate(true)}
         >
           <FileText className="h-4 w-4" />
           Template
