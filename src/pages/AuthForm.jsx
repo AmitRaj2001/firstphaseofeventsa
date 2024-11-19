@@ -1,9 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
 import Button from '../components/Button';
 import Input from '../components/Input';
 
 const PinInput = ({ value, onChange, label }) => {
+  const inputRefs = useRef([]);
+
+  const handleInputChange = (index, event) => {
+  const { value: inputValue } = event.target;
+
+  // Allow only one character in each input
+  if (inputValue.length <= 1) {
+    onChange(index, inputValue);
+
+    // Move focus to the next input if there's a single character
+    if (inputValue && index < 3 && inputRefs.current[index + 1]) {
+      inputRefs.current[index + 1].focus();
+    }
+  }
+};
+
   return (
     <div className="space-y-2">
       <label>{label}</label>
@@ -11,10 +27,11 @@ const PinInput = ({ value, onChange, label }) => {
         {[0, 1, 2, 3].map((index) => (
           <Input
             key={index}
+            ref={(el) => (inputRefs.current[index] = el)}
             type="text"
             maxLength={1}
             value={value[index]}
-            onChange={(e) => onChange(index, e.target.value)}
+            onChange={(e) => handleInputChange(index, e)}
             className="w-12 h-12 text-center"
           />
         ))}
@@ -24,7 +41,7 @@ const PinInput = ({ value, onChange, label }) => {
 };
 
 const AuthForm = () => {
-  const [view, setView] = useState("initial");
+  const [view, setView] = useState("log_in"); // Default to "log_in" for testing
   const [phoneOrEmail, setPhoneOrEmail] = useState("");
   const [pin, setPin] = useState(["", "", "", ""]);
   const [otp, setOtp] = useState("");
@@ -46,12 +63,11 @@ const AuthForm = () => {
       pin: pin.join(""),
       otp,
     });
-    // Redirect after form submission, can use history.push or useNavigate here
-    window.location.href = "/homepage";  // This will simulate a redirect to /homepage
+    window.location.href = "/homepage";  // Simulate a redirect to /homepage
   };
 
-  
-  
+  /*
+  // Initial view section is commented out
   const renderInitialView = () => (
     <>
       <div className="flex space-x-2 mb-6">
@@ -74,21 +90,9 @@ const AuthForm = () => {
           log_in
         </Button>
       </div>
-      <div className="space-y-4">
-        <Input
-          type="text"
-          placeholder="Enter Phone Number/Email ID"
-          value={phoneOrEmail}
-          onChange={(e) => setPhoneOrEmail(e.target.value)}
-        />
-        <PinInput value={pin} onChange={handlePinChange} label="Enter Temporary Pin" />
-        <PinInput value={["", "", "", ""]} onChange={() => {}} label="Create New Pin" />
-        <button className="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none">
-          Submit
-        </button>
-      </div>
     </>
   );
+  */
 
   const renderLoginView = () => (
     <>
@@ -188,7 +192,8 @@ const AuthForm = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        {view === "initial" && renderInitialView()}
+        {/* Commenting out the initial view */}
+        {/* {view === "initial" && renderInitialView()} */}
         {view === "log_in" && renderLoginView()}
         {view === "sign_up" && renderSignupView()}
       </div>
