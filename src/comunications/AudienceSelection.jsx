@@ -1,50 +1,74 @@
 import React, { useState } from 'react';
-import { Button } from "../components/ui/Button"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../components/ui/Select"
-import { Checkbox } from "../components/ui/Checkbox"
+import BroadcastMessage from './BroadcastMessage'; // Import BroadcastMessage component
 
-export default function EventUpdate({ onBack, onNext }) {
-  const [placeholders, setPlaceholders] = useState({
-    name: 'Source: Guest list: Name',
-    event: 'Lunch',
-    time: '1:00 pm',
-    location: 'Banquet Hall 1',
-    sender: 'Sharma & Gupta Family',
-  })
+export default function AudienceSelection() {
+  const [showBroadcastMessage, setShowBroadcastMessage] = useState(false);
 
-  const handleInputChange = (key, value) => {
-    setPlaceholders(prev => ({ ...prev, [key]: value }))
-  }
+  // Function to handle the Next button click
+  const handleNext = () => {
+    setShowBroadcastMessage(true); // Switch to BroadcastMessage component
+  };
 
   return (
-    <div className="p-6 max-w-2xl mx-auto bg-white rounded-xl shadow-md">
-      <h1 className="text-2xl font-bold mb-4">Event Update</h1>
-      <div className="bg-gray-100 p-4 rounded mb-4">
-        <p>Hey {placeholders.name},</p>
-        <p>{placeholders.event} will start at {placeholders.time} in {placeholders.location}.</p>
-        <p>Regards,</p>
-        <p>{placeholders.sender}.</p>
-        <p className="text-sm text-gray-500">Reply STOP to unsubscribe</p>
-      </div>
-      <div className="space-y-4">
-        {Object.entries(placeholders).map(([key, value]) => (
-          <div key={key}>
-            <label htmlFor={key} className="block text-sm font-medium text-gray-700 mb-1">
-              {key.charAt(0).toUpperCase() + key.slice(1)}
-            </label>
-            <Input
-              id={key}
-              value={value}
-              onChange={(e) => handleInputChange(key, e.target.value)}
-            />
+    <div className="p-6">
+      {!showBroadcastMessage ? (
+        // Show the AudienceSelection Component
+        <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-x-6">
+          {/* Event Update Card */}
+          <div className="bg-white border rounded-lg shadow-md p-4 w-full md:w-1/2">
+            <h3 className="text-lg font-semibold">Event Update</h3>
+            <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+              <p>Hey Name,</p>
+              <p>Lunch will start at <span className="font-semibold">1:00 pm</span> in Banquet Hall 1.</p>
+              <p className="mt-4">Regards,<br />Sharma & Gupta Family.</p>
+              <p className="mt-2 text-sm text-gray-500">Reply STOP to unsubscribe</p>
+            </div>
           </div>
-        ))}
-      </div>
-      <div className="mt-6 flex justify-between">
-        <Button variant="outline" onClick={onBack}>Back</Button>
-        <Button variant="outline">Save as Draft</Button>
-        <Button onClick={onNext}>Next</Button>
-      </div>
+
+          {/* Broadcast Form */}
+          <div className="bg-white border rounded-lg shadow-md p-4 w-full md:w-1/2">
+            <h3 className="text-lg font-semibold">Who would you like to send the Broadcast to?</h3>
+
+            <div className="mt-4">
+              <label className="block text-sm font-medium text-gray-700">Audience <span className="text-red-500">*</span></label>
+              <select className="mt-1 block w-full p-2 border rounded-md">
+                <option>Source: Guest list: Category</option>
+              </select>
+            </div>
+
+            <div className="mt-4">
+              <h4 className="text-sm font-semibold">Filters:</h4>
+              <div className="mt-2">
+                <input type="checkbox" id="blank" name="blank" />
+                <label htmlFor="blank" className="ml-2"> (Blanks)</label>
+              </div>
+              <div className="mt-2">
+                <input type="checkbox" id="ladkewale" name="ladkewale" />
+                <label htmlFor="ladkewale" className="ml-2">Ladkewale</label>
+              </div>
+              <div className="mt-2">
+                <input type="checkbox" id="ladkiwale" name="ladkiwale" />
+                <label htmlFor="ladkiwale" className="ml-2">Ladkiwale</label>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="mt-4 flex space-x-4">
+              <button className="bg-gray-300 text-white px-4 py-2 rounded-md hover:bg-gray-900">Back</button>
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md">Save as Draft</button>
+              <button
+                className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-900"
+                onClick={handleNext} // Trigger handleNext on click
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        // Show the BroadcastMessage Component when "Next" is clicked
+        <BroadcastMessage />
+      )}
     </div>
-  )
+  );
 }

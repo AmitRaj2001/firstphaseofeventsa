@@ -1,8 +1,18 @@
-import React from 'react';
-import { Button } from "../components/ui/Button"
-
+import React, { useState } from 'react';
+import { Button } from "../components/ui/Button";
+import MessageStatus from './MessageStatus';
 
 export default function BroadcastMessage() {
+  const [showMessageStatus, setShowMessageStatus] = useState(false);
+
+  const handleSendNow = () => {
+    setShowMessageStatus(true);
+  };
+
+  if (showMessageStatus) {
+    return <MessageStatus />;
+  }
+
   return (
     <div className="p-6 max-w-2xl mx-auto bg-white rounded-xl shadow-md">
       <h1 className="text-2xl font-bold mb-4">Event Update</h1>
@@ -17,7 +27,7 @@ export default function BroadcastMessage() {
       <div className="flex justify-between">
         <Button variant="outline">Back</Button>
         <Button variant="outline">Save as Draft</Button>
-        <Button>Send Now</Button>
+        <Button onClick={handleSendNow}>Send Now</Button>
       </div>
     </div>
   );
